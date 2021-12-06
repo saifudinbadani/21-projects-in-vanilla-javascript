@@ -16,10 +16,40 @@ function showSuccess(input){
     let formControl = input.parentElement;
     formControl.className = 'form-control success';
 }
-
-function validateEmail(email) {
+//Check Email
+function checkEmail(input) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    if(input.value.trim() === ''){
+        showError(input, `${getFieldName(input.id)} is required`)
+   }
+    else if(re.test(input.value)){
+        showSuccess(input)
+    }else{
+        showError(input, 'Email is not valid')
+    }
+}
+
+//Check passwords match
+function checkPasswordsMatch(input1, input2){
+    if(input1.value === ''){
+        showError(input1, `${getFieldName(input1.id)} is required`)
+    }
+    else if(input1.value !== input2.value){
+        showError(input2, 'Passwords do not match')
+    }else{
+        showSuccess(input2)
+    }
+}
+
+//Check Length
+function checkLength(input, min, max){
+    if(input.value.length < min){
+        showError(input, `${getFieldName(input.id)} must be atleast ${min} characters`);
+    } else if(input.value.length > max){
+        showError(input, `${getFieldName(input.id)} must not be more than ${max} characters`);
+    } else{
+        showSuccess(input)
+    }
 }
 
 //Get Fieldname
@@ -42,5 +72,9 @@ function checkRequired(inputArr){
 //event listeners
 form.addEventListener('submit', function submitForm(e){
     e.preventDefault();
-    checkRequired([username, email, password, password2])
+    checkRequired([username, email, password, password2]);
+    checkLength(username, 3, 10);
+    checkLength(password, 6, 25);
+    checkEmail(email);
+    checkPasswordsMatch(password, password2);
 })
