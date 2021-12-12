@@ -9,6 +9,8 @@ function setMovieData(movieIndex, moviePrice){
     localStorage.setItem('selectedMovieIndex', movieIndex);
     localStorage.setItem('selectedMoviePrice', moviePrice);
 }
+populateUI();
+
 function updateCountTotal(){
     const seatSelected = document.querySelectorAll('.row .seat.selected')
     // copying the selected seats in array and giving index with map function
@@ -53,5 +55,5 @@ movieSelect.addEventListener('change', e => {
     updateCountTotal();
 })
 
-populateUI();
+
 updateCountTotal();
